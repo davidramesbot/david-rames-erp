@@ -1,0 +1,43 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "server",
+    "db",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://48qz1Z5SAaTiLoH.31ea4ebdf9f6:mT96Wr4J6CtMKon7j0oG@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/fYteBFYqAzaQmQyhaoSxKv?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": [
+    "no_db_push"
+  ],
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663096610325/fYteBFYqAzaQmQyhaoSxKv",
+    "access_key_id": "ASIAZV3A2ECZJ3ZBUCO6",
+    "secret_access_key": "pmeHAVIYEt/JTDd36uYR7wJRmPvfZOv2iaKv1ngu",
+    "session_token": "IQoJb3JpZ2luX2VjED8aCXVzLWVhc3QtMSJGMEQCIF3yDQJPrE0yWeIT1PJvhwFSmezX1BkW6dihWW90VzqlAiAnJzjS+C9FP7Vml8GeohWaxViK6izMCGePeiNi4x+cwCr1AwgIEAQaDDY2NTM4NjA5ODg2NiIMlbb4kIf3TwTf60iUKtIDmkAPDEatB8bSNfmR7XYVtkSv8VwATAIu6utk0cNnn92eD2Ip7W4UoRKRHOHP/Il5fCXfHOamLEhdNn4adQB+i0d9jkyFyPr2/2yBZmnthIz0LSqIY1A1Jpkp5MXeFJVS0rNabdEo9WRwmi39q6wExKJcqjcVGvkMrZGeEBya3Zk8Wo8QUIEpxTia97MYbzkmZUpgYOXIKdfLj6FOO/qkJLg6l77no9Fqooezb3Ll/fd1lwnfRqU2Vbp4nlBgEeacYIWSjPwujCnFtQe7kNH9nsKo+oznmkBrJN3NadEg9OAo1JvJVrmcozVkqg/yEzpS8D2VkWLE2kHjJP3yTRAoOqErnzwcY2zy1oZwuuIyg6tP3bs1BLy29BhpahxvE/u0/uNMG08R1n+jU6fgp4kYu29/M+0EwdljJ01i1SnHt82oxgtEG4TkTgKZiSc68XRt7JpDFsrArqV3oLsiWxK0Pup7andA1Sw7lksgXSsZkgyq4OR3Cr2/l4zKtISOaNML7luwyjYHpsuIFY0BROm43BqdE1sUas+miv7b74MQy84D0WEBnPeb0bUDZlHuc5B1TAeCJE7wK8NSY2Cdpzcs07We2j/OQJT81vyw5TbEbp95KjDZrLzQBjqeAUc65YA7Vi+PSyWOq8bM3JH6YDBMZqQAsH+XumBaIRhUUUSPSyxFt80uj69ORhJm+e45rYcjzM7tqi1DQT6jjEt0arQny9ReBWRUWwqVRPqOYYJrwcHVsTJMDHEdop41rm3wsT+bUNKWCPv3bf8CDiYZ6Jp11lItzaHrTiH/OI2xfZB9zTWFulfxsyrwFDDrhDBxX1A+iLWuU7l5q/FJ",
+    "expiration": "2026-05-22T02:27:37.000Z"
+  },
+  "name": "david-rames-erp",
+  "path": "/home/ubuntu/david-rames-erp",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "igg67czVXZam2VtmRAWPUT",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "ZUWBp2CysvCosUBn6rBmWf",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "David Rames haleem",
+    "OWNER_OPEN_ID": "FhiMsYpYBqbs9fJ7hWNLg6",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "793d7ecb-f352-4651-9f14-729cb02ad602",
+    "VITE_APP_ID": "fYteBFYqAzaQmQyhaoSxKv",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "DAVID RAMES ERP v4",
+    "VITE_FRONTEND_FORGE_API_KEY": "Y9PYHXyCyi3FCDiGeHGoch",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-db-user",
+  "test_command": "pnpm test"
+}
