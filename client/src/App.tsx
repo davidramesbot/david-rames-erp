@@ -19,6 +19,8 @@ import AttendanceTracker from "./pages/AttendanceTracker";
 import PayrollManagement from "./pages/PayrollManagement";
 import LeavesManagement from "./pages/LeavesManagement";
 import AdvancesManagement from "./pages/AdvancesManagement";
+import EmployeeForm from "./pages/EmployeeForm";
+import ClientForm from "./pages/ClientForm";
 
 function ProtectedRoute({ component: Component, requiredRoles }: { component: any; requiredRoles?: string[] }) {
   const { user, loading } = useAuth();
@@ -66,16 +68,28 @@ function Router() {
       <Route path={"/employees"}>
         <ProtectedRoute component={EmployeesList} requiredRoles={["admin", "supervisor"]} />
       </Route>
+      <Route path={"/employees/new"}>
+        <ProtectedRoute component={EmployeeForm} requiredRoles={["admin", "supervisor"]} />
+      </Route>
       <Route path={"/employees/:id"}>
         <ProtectedRoute component={EmployeeDetails} requiredRoles={["admin", "supervisor"]} />
+      </Route>
+      <Route path={"/employees/:id/edit"}>
+        <ProtectedRoute component={EmployeeForm} requiredRoles={["admin", "supervisor"]} />
       </Route>
 
       {/* Clients routes */}
       <Route path={"/clients"}>
         <ProtectedRoute component={ClientsList} requiredRoles={["admin", "supervisor"]} />
       </Route>
+      <Route path={"/clients/new"}>
+        <ProtectedRoute component={ClientForm} requiredRoles={["admin", "supervisor"]} />
+      </Route>
       <Route path={"/clients/:id"}>
         <ProtectedRoute component={ClientDetails} requiredRoles={["admin", "supervisor"]} />
+      </Route>
+      <Route path={"/clients/:id/edit"}>
+        <ProtectedRoute component={ClientForm} requiredRoles={["admin", "supervisor"]} />
       </Route>
 
       {/* Attendance routes */}
