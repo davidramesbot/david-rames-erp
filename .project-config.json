@@ -1,8 +1,8 @@
 {
   "build_command": "pnpm run build",
   "capabilities": [
-    "server",
     "db",
+    "server",
     "user"
   ],
   "dev_command": "pnpm run dev",
@@ -14,10 +14,10 @@
   ],
   "git_remote": {
     "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663096610325/fYteBFYqAzaQmQyhaoSxKv",
-    "access_key_id": "ASIAZV3A2ECZJ3ZBUCO6",
-    "secret_access_key": "pmeHAVIYEt/JTDd36uYR7wJRmPvfZOv2iaKv1ngu",
-    "session_token": "IQoJb3JpZ2luX2VjED8aCXVzLWVhc3QtMSJGMEQCIF3yDQJPrE0yWeIT1PJvhwFSmezX1BkW6dihWW90VzqlAiAnJzjS+C9FP7Vml8GeohWaxViK6izMCGePeiNi4x+cwCr1AwgIEAQaDDY2NTM4NjA5ODg2NiIMlbb4kIf3TwTf60iUKtIDmkAPDEatB8bSNfmR7XYVtkSv8VwATAIu6utk0cNnn92eD2Ip7W4UoRKRHOHP/Il5fCXfHOamLEhdNn4adQB+i0d9jkyFyPr2/2yBZmnthIz0LSqIY1A1Jpkp5MXeFJVS0rNabdEo9WRwmi39q6wExKJcqjcVGvkMrZGeEBya3Zk8Wo8QUIEpxTia97MYbzkmZUpgYOXIKdfLj6FOO/qkJLg6l77no9Fqooezb3Ll/fd1lwnfRqU2Vbp4nlBgEeacYIWSjPwujCnFtQe7kNH9nsKo+oznmkBrJN3NadEg9OAo1JvJVrmcozVkqg/yEzpS8D2VkWLE2kHjJP3yTRAoOqErnzwcY2zy1oZwuuIyg6tP3bs1BLy29BhpahxvE/u0/uNMG08R1n+jU6fgp4kYu29/M+0EwdljJ01i1SnHt82oxgtEG4TkTgKZiSc68XRt7JpDFsrArqV3oLsiWxK0Pup7andA1Sw7lksgXSsZkgyq4OR3Cr2/l4zKtISOaNML7luwyjYHpsuIFY0BROm43BqdE1sUas+miv7b74MQy84D0WEBnPeb0bUDZlHuc5B1TAeCJE7wK8NSY2Cdpzcs07We2j/OQJT81vyw5TbEbp95KjDZrLzQBjqeAUc65YA7Vi+PSyWOq8bM3JH6YDBMZqQAsH+XumBaIRhUUUSPSyxFt80uj69ORhJm+e45rYcjzM7tqi1DQT6jjEt0arQny9ReBWRUWwqVRPqOYYJrwcHVsTJMDHEdop41rm3wsT+bUNKWCPv3bf8CDiYZ6Jp11lItzaHrTiH/OI2xfZB9zTWFulfxsyrwFDDrhDBxX1A+iLWuU7l5q/FJ",
-    "expiration": "2026-05-22T02:27:37.000Z"
+    "access_key_id": "ASIAZV3A2ECZKZOJQKYR",
+    "secret_access_key": "Q6TAemkrvKbpoG5FnOR1b1t6iM1zNc4sZhIUpv4Z",
+    "session_token": "IQoJb3JpZ2luX2VjEEkaCXVzLWVhc3QtMSJHMEUCIDhpQZCpAWN+yX9oo2poczO0qWHjLAGDFkQ2LMezBPNpAiEA8kNSpZyt7WCx7B9FkgXPYLMvTBndenmlZRwfWTyKNa8q9QMIEhAEGgw2NjUzODYwOTg4NjYiDNG4208RmmQ1oFVHnSrSA/5PH5/V0jOjXluoYQmWS3YMv3E9IHlgiqOhRiebxA5uNpzNBNrkNGoIZGInckkcCE5jd6qrm6tjJHChsWVrFoF4JuxGrEea40zxwOrHq8iGg/xO0bf9+h7Ef35MGStN6HYLaHtfz99YOXKVUTDU+tMh+QYZifsTb0k2o1+FjeN7YsPs1EP6baJbkIpDLgUCEoWgy7LdpxW/ZkcVC6UXcywuo8vkOGt96xHN0Q+a0VRUBObJphaVD+FHORsftvjeL8BVquJXz0Lea1Clfe+Oc6PVc/AwS5vtszFGKO93U/JSoOsIxzrpz0L74x2VMzh+PNkw2PFsVwME1D9PCAUxDjivV+azy0XwFrvF27WrsgIJjuYgBoklWUrlLqebg9sE54zQMx1rDK6cJZJwXVtyUSNxAOgz63JcUtdmiIXhxhYJFx1c3xRVeiFjevgLPwWcxgc3+z3htIhG/BT6s+kNHUJbcHsIx0XshIp7wzhL9LbqjUuSnwAUh0MusRXjQwdoUYtXZj0qXfJPNuuJ6QavLOJlpuyYGznGwZwtgMTVshE+PSQE+0eYxpoWsDeTiymbngAXVEz/5Idrt1+CsQdqImccFMQk2h7+s/W0ann2ca1bsggwqOP20AY6nQEA6AgctCW06a6u5rdYWwj9Idd941nMqxuida+hvSCgZ1yeIA0I9iHEKiD+fI8uFaGuwxAzmyFFROhrxpbtJcMcQ+plkZ9SWzLnYlqPPsfV3aiPbYzctiHe7PtfjQ9THN2JGqUqAzJEa9q+dA4TM7jYpSZ9FugstS/4140WM7UNfjWKhg3lLGGDcejstFGCEXGHvwkRVj1mrWakhT0D",
+    "expiration": "2026-06-02T04:22:00.000Z"
   },
   "name": "david-rames-erp",
   "path": "/home/ubuntu/david-rames-erp",
