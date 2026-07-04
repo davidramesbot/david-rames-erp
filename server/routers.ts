@@ -1,9 +1,10 @@
-import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+
+const COOKIE_NAME = "session";
 
 // Admin-only procedure
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -49,6 +50,27 @@ export const appRouter = router({
 
   // Employee Management
   employees: router({
+    search: supervisorProcedure
+      .input(z.object({
+        query: z.string().optional(),
+        department: z.string().optional(),
+        position: z.string().optional(),
+        status: z.enum(['active', 'inactive', 'on_leave']).optional(),
+        limit: z.number().default(10),
+        offset: z.number().default(0),
+      }))
+      .query(async ({ input }) => {
+        const { searchEmployees } = await import('./db');
+        return await searchEmployees({
+          query: input.query,
+          department: input.department,
+          position: input.position,
+          status: input.status,
+          limit: input.limit,
+          offset: input.offset,
+        });
+      }),
+
     list: supervisorProcedure
       .input(z.object({ limit: z.number().optional(), offset: z.number().optional() }).optional())
       .query(async ({ input }) => {
@@ -138,6 +160,29 @@ export const appRouter = router({
 
   // Client Management
   clients: router({
+    search: supervisorProcedure
+      .input(z.object({
+        query: z.string().optional(),
+        city: z.string().optional(),
+        status: z.enum(['active', 'inactive', 'prospect']).optional(),
+        minSpent: z.number().optional(),
+        maxSpent: z.number().optional(),
+        limit: z.number().default(10),
+        offset: z.number().default(0),
+      }))
+      .query(async ({ input }) => {
+        const { searchClients } = await import('./db');
+        return await searchClients({
+          query: input.query,
+          city: input.city,
+          status: input.status,
+          minSpent: input.minSpent,
+          maxSpent: input.maxSpent,
+          limit: input.limit,
+          offset: input.offset,
+        });
+      }),
+
     list: supervisorProcedure
       .input(z.object({ limit: z.number().optional(), offset: z.number().optional() }).optional())
       .query(async ({ input }) => {
@@ -148,22 +193,22 @@ export const appRouter = router({
             email: "info@tech.com",
             phone: "0112345678",
             city: "الرياض",
-            country: "السعودية",
             status: "active",
+            totalSpent: 50000,
           },
           {
             id: 2,
-            name: "مؤسسة الحلول الذكية",
-            email: "info@smart.com",
+            name: "مؤسسة الاستشارات الهندسية",
+            email: "contact@eng.com",
             phone: "0112345679",
             city: "جدة",
-            country: "السعودية",
             status: "active",
+            totalSpent: 75000,
           },
         ];
       }),
 
-    get: supervisorProcedure
+    get: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return {
@@ -171,35 +216,27 @@ export const appRouter = router({
           name: "شركة التقنية المتقدمة",
           email: "info@tech.com",
           phone: "0112345678",
-          address: "شارع الملك فهد، الرياض",
           city: "الرياض",
-          country: "السعودية",
-          taxId: "123456789",
-          contactPerson: "محمد أحمد",
-          contactPhone: "0501111111",
-          notes: "عميل VIP",
+          address: "الرياض، المملكة العربية السعودية",
           status: "active",
+          totalOrders: 15,
+          totalSpent: 50000,
         };
       }),
 
-    create: supervisorProcedure
+    create: adminProcedure
       .input(z.object({
         name: z.string(),
         email: z.string().email().optional(),
         phone: z.string().optional(),
-        address: z.string().optional(),
         city: z.string().optional(),
-        country: z.string().optional(),
-        taxId: z.string().optional(),
-        contactPerson: z.string().optional(),
-        contactPhone: z.string().optional(),
-        notes: z.string().optional(),
+        address: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         return { id: 3, ...input, status: "active" };
       }),
 
-    update: supervisorProcedure
+    update: adminProcedure
       .input(z.object({
         id: z.number(),
         data: z.any(),
@@ -223,7 +260,11 @@ export const appRouter = router({
         date: z.string(),
       }))
       .mutation(async ({ input }) => {
-        return { success: true, employeeId: input.employeeId, checkInTime: new Date() };
+        return {
+          success: true,
+          employeeId: input.employeeId,
+          checkIn: new Date().toLocaleTimeString('ar-SA'),
+        };
       }),
 
     recordCheckOut: protectedProcedure
@@ -232,7 +273,11 @@ export const appRouter = router({
         date: z.string(),
       }))
       .mutation(async ({ input }) => {
-        return { success: true, employeeId: input.employeeId, checkOutTime: new Date() };
+        return {
+          success: true,
+          employeeId: input.employeeId,
+          checkOut: new Date().toLocaleTimeString('ar-SA'),
+        };
       }),
   }),
 
@@ -247,64 +292,91 @@ export const appRouter = router({
         workingDaysInMonth: z.number(),
         presentDays: z.number(),
         absentDays: z.number(),
-        sickLeaveDays: z.number().optional(),
-        annualLeaveDays: z.number().optional(),
-        emergencyLeaveDays: z.number().optional(),
-        advanceAmount: z.number().optional(),
-        bonusAmount: z.number().optional(),
-        insuranceDeduction: z.number().optional(),
       }))
-      .mutation(async ({ input }) => {
+      .query(async ({ input }) => {
         const dailySalary = input.baseSalary / input.workingDaysInMonth;
-        const salaryForPresentDays = dailySalary * input.presentDays;
-        const absentDeduction = dailySalary * input.absentDays;
-        const sickLeaveDeduction = (dailySalary * (input.sickLeaveDays || 0)) * 0.5;
-        const emergencyLeaveDeduction = dailySalary * (input.emergencyLeaveDays || 0);
-        const totalDeductions = absentDeduction + sickLeaveDeduction + emergencyLeaveDeduction + (input.advanceAmount || 0) + (input.insuranceDeduction || 0);
-        const netSalary = salaryForPresentDays - totalDeductions + (input.bonusAmount || 0);
+        const deduction = dailySalary * input.absentDays;
+        const grossSalary = input.baseSalary;
+        const netSalary = grossSalary - deduction;
 
         return {
           employeeId: input.employeeId,
           month: input.month,
           year: input.year,
-          baseSalary: input.baseSalary,
-          salaryForPresentDays,
-          totalDeductions,
-          bonusAmount: input.bonusAmount || 0,
-          netSalary: Math.max(0, netSalary),
-          status: "draft",
+          grossSalary,
+          deductions: deduction,
+          netSalary,
         };
       }),
   }),
 
-  // Leaves Management
-  leaves: router({
-    request: protectedProcedure
+  // Reports
+  reports: router({
+    exportPayroll: supervisorProcedure
       .input(z.object({
-        employeeId: z.number(),
-        leaveType: z.enum(["annual", "sick", "emergency", "unpaid"]),
-        startDate: z.string(),
-        endDate: z.string(),
-        numberOfDays: z.number(),
-        reason: z.string().optional(),
+        month: z.number(),
+        year: z.number(),
+        format: z.enum(['excel', 'pdf']),
       }))
-      .mutation(async ({ input }) => {
-        return { id: 1, ...input, status: "pending" };
+      .query(async ({ input }) => {
+        return {
+          success: true,
+          fileName: `payroll_${input.month}_${input.year}.${input.format === 'excel' ? 'xlsx' : 'pdf'}`,
+          downloadUrl: `/api/reports/payroll/${input.month}/${input.year}`,
+        };
       }),
 
+    exportAttendance: supervisorProcedure
+      .input(z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+        format: z.enum(['excel', 'pdf']),
+      }))
+      .query(async ({ input }) => {
+        return {
+          success: true,
+          fileName: `attendance_${input.startDate}_${input.endDate}.${input.format === 'excel' ? 'xlsx' : 'pdf'}`,
+          downloadUrl: `/api/reports/attendance/${input.startDate}/${input.endDate}`,
+        };
+      }),
+
+    generateSalarySlip: protectedProcedure
+      .input(z.object({
+        employeeId: z.number(),
+        month: z.number(),
+        year: z.number(),
+      }))
+      .query(async ({ input }) => {
+        return {
+          success: true,
+          fileName: `salary_slip_${input.employeeId}_${input.month}_${input.year}.pdf`,
+          downloadUrl: `/api/reports/salary-slip/${input.employeeId}/${input.month}/${input.year}`,
+        };
+      }),
+
+    getDashboardStats: protectedProcedure.query(async () => {
+      return {
+        totalEmployees: 45,
+        totalClients: 28,
+        totalOrders: 156,
+        monthlyPayroll: 225000,
+      };
+    }),
+  }),
+
+  // Leaves Management
+  leaves: router({
     getBalance: protectedProcedure
       .input(z.object({ employeeId: z.number() }))
       .query(async ({ input }) => {
         return {
+          employeeId: input.employeeId,
           annualLeaveTotal: 30,
-          annualLeaveUsed: 10,
-          annualLeaveRemaining: 20,
+          annualLeaveUsed: 5,
+          annualLeaveRemaining: 25,
           sickLeaveTotal: 15,
           sickLeaveUsed: 3,
           sickLeaveRemaining: 12,
-          emergencyLeaveTotal: 5,
-          emergencyLeaveUsed: 1,
-          emergencyLeaveRemaining: 4,
         };
       }),
   }),
@@ -315,73 +387,16 @@ export const appRouter = router({
       .input(z.object({
         employeeId: z.number(),
         amount: z.string(),
-        reason: z.string().optional(),
-      }))
-      .mutation(async ({ input }) => {
-        return { id: 1, ...input, status: "pending", requestDate: new Date() };
-      }),
-  }),
-
-  // Reports & Export
-  reports: router({
-    exportPayroll: supervisorProcedure
-      .input(z.object({
-        month: z.number(),
-        year: z.number(),
-        format: z.enum(["excel", "pdf"]),
+        reason: z.string(),
       }))
       .mutation(async ({ input }) => {
         return {
-          success: true,
-          message: `تم تصدير تقرير الرواتب لـ ${input.month}/${input.year}`,
-          fileName: `payroll_${input.month}_${input.year}.${input.format === "excel" ? "xlsx" : "pdf"}`,
-          url: `/reports/payroll_${input.month}_${input.year}.${input.format === "excel" ? "xlsx" : "pdf"}`,
-        };
-      }),
-
-    exportAttendance: supervisorProcedure
-      .input(z.object({
-        startDate: z.string(),
-        endDate: z.string(),
-        format: z.enum(["excel", "pdf"]),
-      }))
-      .mutation(async ({ input }) => {
-        return {
-          success: true,
-          message: `تم تصدير تقرير الحضور من ${input.startDate} إلى ${input.endDate}`,
-          fileName: `attendance_${input.startDate}_${input.endDate}.${input.format === "excel" ? "xlsx" : "pdf"}`,
-          url: `/reports/attendance_${input.startDate}_${input.endDate}.${input.format === "excel" ? "xlsx" : "pdf"}`,
-        };
-      }),
-
-    generateSalarySlip: protectedProcedure
-      .input(z.object({
-        employeeId: z.number(),
-        month: z.number(),
-        year: z.number(),
-      }))
-      .mutation(async ({ input }) => {
-        return {
-          success: true,
-          message: `تم إنشاء كشف الراتب للموظف`,
-          fileName: `salary_slip_${input.employeeId}_${input.month}_${input.year}.pdf`,
-          url: `/reports/salary_slip_${input.employeeId}_${input.month}_${input.year}.pdf`,
-        };
-      }),
-
-    getDashboardStats: protectedProcedure
-      .query(async ({ ctx }) => {
-        return {
-          totalEmployees: 45,
-          totalClients: 28,
-          totalOrders: 156,
-          totalInventory: 892,
-          presentToday: 42,
-          absentToday: 3,
-          pendingLeaves: 5,
-          pendingAdvances: 2,
-          monthlyPayroll: "450,000 ر.س",
-          monthlyRevenue: "1,250,000 ر.س",
+          id: 1,
+          employeeId: input.employeeId,
+          amount: input.amount,
+          reason: input.reason,
+          status: 'pending',
+          requestDate: new Date().toISOString(),
         };
       }),
   }),

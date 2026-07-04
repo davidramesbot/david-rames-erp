@@ -96,6 +96,90 @@ export async function getEmployees() {
   return await db.select().from(employees);
 }
 
+export async function searchEmployees({
+  query,
+  department,
+  position,
+  status,
+  limit = 10,
+  offset = 0,
+}: {
+  query?: string;
+  department?: string;
+  position?: string;
+  status?: 'active' | 'inactive' | 'on_leave';
+  limit?: number;
+  offset?: number;
+}) {
+  const db = await getDb();
+  if (!db) return { data: [], total: 0, limit, offset, hasMore: false };
+
+  let queryBuilder = db.select().from(employees);
+
+  // Build WHERE conditions
+  const conditions = [];
+
+  if (query) {
+    const q = `%${query}%`;
+    // Note: This is a simplified approach. For production, use proper SQL LIKE or full-text search
+    // conditions.push(or(
+    //   like(employees.name, q),
+    //   like(employees.email, q),
+    //   like(employees.phone, q)
+    // ));
+  }
+
+  if (department) {
+    // conditions.push(eq(employees.department, department));
+  }
+
+  if (position) {
+    // conditions.push(eq(employees.position, position));
+  }
+
+  if (status) {
+    // conditions.push(eq(employees.status, status));
+  }
+
+  // For now, return all employees (mock implementation)
+  const allEmployees = await queryBuilder;
+
+  // Apply in-memory filtering for now
+  let filtered = allEmployees;
+
+  if (query) {
+    const q = query.toLowerCase();
+    filtered = filtered.filter(e =>
+      (e.name?.toLowerCase().includes(q) || false) ||
+      (e.email?.toLowerCase().includes(q) || false) ||
+      (e.phone?.includes(q) || false)
+    );
+  }
+
+  if (department) {
+    filtered = filtered.filter(e => e.department === department);
+  }
+
+  if (position) {
+    filtered = filtered.filter(e => e.position === position);
+  }
+
+  if (status) {
+    filtered = filtered.filter(e => e.status === status);
+  }
+
+  const total = filtered.length;
+  const results = filtered.slice(offset, offset + limit);
+
+  return {
+    data: results,
+    total,
+    limit,
+    offset,
+    hasMore: offset + limit < total,
+  };
+}
+
 export async function getEmployeeById(id: number) {
   const db = await getDb();
   if (!db) return undefined;
@@ -115,6 +199,77 @@ export async function getClients() {
   const db = await getDb();
   if (!db) return [];
   return await db.select().from(clients);
+}
+
+export async function searchClients({
+  query,
+  city,
+  status,
+  minSpent,
+  maxSpent,
+  limit = 10,
+  offset = 0,
+}: {
+  query?: string;
+  city?: string;
+  status?: 'active' | 'inactive' | 'prospect';
+  minSpent?: number;
+  maxSpent?: number;
+  limit?: number;
+  offset?: number;
+}) {
+  const db = await getDb();
+  if (!db) return { data: [], total: 0, limit, offset, hasMore: false };
+
+  let queryBuilder = db.select().from(clients);
+
+  // For now, return all clients (mock implementation)
+  const allClients = await queryBuilder;
+
+  // Apply in-memory filtering
+  let filtered = allClients;
+
+  if (query) {
+    const q = query.toLowerCase();
+    filtered = filtered.filter(c =>
+      (c.name?.toLowerCase().includes(q) || false) ||
+      (c.email?.toLowerCase().includes(q) || false) ||
+      (c.phone?.includes(q) || false)
+    );
+  }
+
+  if (city) {
+    filtered = filtered.filter(c => c.city === city);
+  }
+
+  if (status) {
+    filtered = filtered.filter(c => c.status === status);
+  }
+
+  if (minSpent !== undefined) {
+    filtered = filtered.filter(c => {
+      const spent = c.totalSpent ? parseFloat(c.totalSpent.toString()) : 0;
+      return spent >= minSpent;
+    });
+  }
+
+  if (maxSpent !== undefined) {
+    filtered = filtered.filter(c => {
+      const spent = c.totalSpent ? parseFloat(c.totalSpent.toString()) : 0;
+      return spent <= maxSpent;
+    });
+  }
+
+  const total = filtered.length;
+  const results = filtered.slice(offset, offset + limit);
+
+  return {
+    data: results,
+    total,
+    limit,
+    offset,
+    hasMore: offset + limit < total,
+  };
 }
 
 export async function getClientById(id: number) {
