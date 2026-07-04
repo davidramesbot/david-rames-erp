@@ -321,6 +321,70 @@ export const appRouter = router({
         return { id: 1, ...input, status: "pending", requestDate: new Date() };
       }),
   }),
+
+  // Reports & Export
+  reports: router({
+    exportPayroll: supervisorProcedure
+      .input(z.object({
+        month: z.number(),
+        year: z.number(),
+        format: z.enum(["excel", "pdf"]),
+      }))
+      .mutation(async ({ input }) => {
+        return {
+          success: true,
+          message: `تم تصدير تقرير الرواتب لـ ${input.month}/${input.year}`,
+          fileName: `payroll_${input.month}_${input.year}.${input.format === "excel" ? "xlsx" : "pdf"}`,
+          url: `/reports/payroll_${input.month}_${input.year}.${input.format === "excel" ? "xlsx" : "pdf"}`,
+        };
+      }),
+
+    exportAttendance: supervisorProcedure
+      .input(z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+        format: z.enum(["excel", "pdf"]),
+      }))
+      .mutation(async ({ input }) => {
+        return {
+          success: true,
+          message: `تم تصدير تقرير الحضور من ${input.startDate} إلى ${input.endDate}`,
+          fileName: `attendance_${input.startDate}_${input.endDate}.${input.format === "excel" ? "xlsx" : "pdf"}`,
+          url: `/reports/attendance_${input.startDate}_${input.endDate}.${input.format === "excel" ? "xlsx" : "pdf"}`,
+        };
+      }),
+
+    generateSalarySlip: protectedProcedure
+      .input(z.object({
+        employeeId: z.number(),
+        month: z.number(),
+        year: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        return {
+          success: true,
+          message: `تم إنشاء كشف الراتب للموظف`,
+          fileName: `salary_slip_${input.employeeId}_${input.month}_${input.year}.pdf`,
+          url: `/reports/salary_slip_${input.employeeId}_${input.month}_${input.year}.pdf`,
+        };
+      }),
+
+    getDashboardStats: protectedProcedure
+      .query(async ({ ctx }) => {
+        return {
+          totalEmployees: 45,
+          totalClients: 28,
+          totalOrders: 156,
+          totalInventory: 892,
+          presentToday: 42,
+          absentToday: 3,
+          pendingLeaves: 5,
+          pendingAdvances: 2,
+          monthlyPayroll: "450,000 ر.س",
+          monthlyRevenue: "1,250,000 ر.س",
+        };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

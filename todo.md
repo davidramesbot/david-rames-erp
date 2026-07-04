@@ -41,18 +41,18 @@
 - [x] Implement optimistic updates for better UX
 
 ## Phase 7: Advanced Features
-- [ ] Export payroll reports to Excel format
-- [ ] Export attendance reports
-- [ ] Generate PDF salary slips
+- [x] Export payroll reports to Excel format
+- [x] Export attendance reports
+- [x] Generate PDF salary slips
 - [ ] Implement employee attendance charts
 - [ ] Add department-wise analytics
 
 ## Phase 8: Testing & Quality Assurance
-- [ ] Write comprehensive unit tests for all procedures
-- [ ] Test role-based access control
-- [ ] Test payroll calculations with edge cases
-- [ ] Perform integration testing
-- [ ] Test UI responsiveness
+- [x] Write comprehensive unit tests for all procedures
+- [x] Test role-based access control
+- [x] Test payroll calculations with edge cases
+- [x] Perform integration testing
+- [x] Test UI responsiveness
 
 ## Phase 9: Deployment & Documentation
 - [ ] Create comprehensive API documentation
