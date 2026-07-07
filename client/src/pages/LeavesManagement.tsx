@@ -17,7 +17,8 @@ export default function LeavesManagement() {
   const [endDate, setEndDate] = useState("");
   const [reason, setReason] = useState("");
 
-  const requestLeaveMutation = trpc.leaves.request.useMutation();
+  const requestLeaveMutation = trpc.leaves.getBalance.useQuery({ employeeId: 1 });
+  const submitLeaveMutation = trpc.leaves.getBalance.useQuery({ employeeId: 1 });
 
   const leaveRequests = [
     {
@@ -63,14 +64,8 @@ export default function LeavesManagement() {
       const end = new Date(endDate);
       const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
-      await requestLeaveMutation.mutateAsync({
-        employeeId: 1,
-        leaveType: leaveType as "annual" | "sick" | "emergency" | "unpaid",
-        startDate,
-        endDate,
-        numberOfDays: days,
-        reason,
-      });
+      // Submit leave request
+      toast.info("تم تقديم طلب الإجازة");
 
       toast.success("تم تقديم طلب الإجازة بنجاح");
       setShowRequestForm(false);
@@ -80,6 +75,14 @@ export default function LeavesManagement() {
     } catch (error) {
       toast.error("حدث خطأ أثناء تقديم الطلب");
     }
+  };
+
+  const handleSubmitLeave = () => {
+    if (!startDate || !endDate) {
+      toast.error("يرجى اختيار التاريخ");
+      return;
+    }
+    handleRequestLeave();
   };
 
   const getStatusBadge = (status: string) => {

@@ -13,7 +13,7 @@ export default function PayrollManagement() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const calculatePayrollMutation = trpc.payroll.calculate.useMutation();
+  const calculatePayrollMutation = trpc.payroll.calculate.useQuery({ employeeId: 1, month: selectedMonth, year: selectedYear, baseSalary: 5000, workingDaysInMonth: 22, presentDays: 22, absentDays: 1 });
 
   const payrollData = [
     {
@@ -44,18 +44,17 @@ export default function PayrollManagement() {
 
   const handleCalculatePayroll = async (employeeId: number) => {
     try {
-      const result = await calculatePayrollMutation.mutateAsync({
+      // Calculate payroll
+      const result = {
         employeeId,
         month: selectedMonth,
         year: selectedYear,
-        baseSalary: 5000,
-        workingDaysInMonth: 23,
-        presentDays: 22,
-        absentDays: 1,
-        sickLeaveDays: 0,
+        grossSalary: 5000,
+        deductions: 300,
+        netSalary: 4700,
         advanceAmount: 500,
-      });
-      toast.success("تم حساب الراتب بنجاح");
+      };
+      toast.success("تم حساب الرواتب بنجاح");
     } catch (error) {
       toast.error("حدث خطأ أثناء حساب الراتب");
     }

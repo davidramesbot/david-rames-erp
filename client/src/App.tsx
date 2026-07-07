@@ -21,6 +21,8 @@ import LeavesManagement from "./pages/LeavesManagement";
 import AdvancesManagement from "./pages/AdvancesManagement";
 import EmployeeForm from "./pages/EmployeeForm";
 import ClientForm from "./pages/ClientForm";
+import ExcelImportExport from "./pages/ExcelImportExport";
+import ReportsPage from "./pages/ReportsPage";
 
 function ProtectedRoute({ component: Component, requiredRoles }: { component: any; requiredRoles?: string[] }) {
   const { user, loading } = useAuth();
@@ -110,6 +112,16 @@ function Router() {
       {/* Advances routes */}
       <Route path={"/advances"}>
         <ProtectedRoute component={AdvancesManagement} requiredRoles={["admin", "supervisor", "user"]} />
+      </Route>
+
+      {/* Excel Import/Export routes */}
+      <Route path={"/import-export"}>
+        <ProtectedRoute component={ExcelImportExport} requiredRoles={["admin", "supervisor"]} />
+      </Route>
+
+      {/* Reports routes */}
+      <Route path={"/reports"}>
+        <ProtectedRoute component={ReportsPage} requiredRoles={["admin", "supervisor"]} />
       </Route>
 
       {/* Final fallback route */}

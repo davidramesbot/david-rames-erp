@@ -60,8 +60,8 @@ export default function ClientDetails() {
                     <p className="font-medium">{client.name}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">الرقم الضريبي</label>
-                    <p className="font-medium">{client.taxId || "-"}</p>
+                    <label className="text-sm text-gray-600">العنوان</label>
+                    <p className="font-medium">{client.address || "-"}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -76,8 +76,8 @@ export default function ClientDetails() {
                     <p className="font-medium">{client.city || "-"}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">الدولة</label>
-                    <p className="font-medium">{client.country || "-"}</p>
+                    <label className="text-sm text-gray-600">الحالة</label>
+                    <p className="font-medium">{client.status || "-"}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -108,12 +108,12 @@ export default function ClientDetails() {
                   <p className="font-medium">{client.phone || "-"}</p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">جهة الاتصال</label>
-                  <p className="font-medium">{client.contactPerson || "-"}</p>
+                  <label className="text-sm text-gray-600">البريد الإلكتروني</label>
+                  <p className="font-medium">{client.email || "-"}</p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">هاتف جهة الاتصال</label>
-                  <p className="font-medium">{client.contactPhone || "-"}</p>
+                  <label className="text-sm text-gray-600">الهاتف</label>
+                  <p className="font-medium">{client.phone || "-"}</p>
                 </div>
               </CardContent>
             </Card>

@@ -28,11 +28,11 @@ export default function ClientForm() {
     phone: client?.phone || "",
     address: client?.address || "",
     city: client?.city || "",
-    country: client?.country || "",
-    taxId: client?.taxId || "",
-    contactPerson: client?.contactPerson || "",
-    contactPhone: client?.contactPhone || "",
-    notes: client?.notes || "",
+    country: "",
+    taxId: "",
+    contactPerson: "",
+    contactPhone: "",
+    notes: "",
   });
 
   const handleChange = (e: any) => {
